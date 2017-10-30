@@ -7,7 +7,7 @@ import org.openqa.selenium.support.PageFactory;
 
 public class FillingPage extends BasePage {
 
-    @FindBy(xpath = "//div[@id='productButton']/span/div")
+    @FindBy(xpath = "//div[@id='productButton']/parent::div")
     public WebElement boxMenuOfProgram;
 
     @FindBy(xpath = "//div[@value='3']")
@@ -36,20 +36,25 @@ public class FillingPage extends BasePage {
     public void fillField(String fieldName, String value) {
         switch (fieldName) {
             case "Программа":
+                /*if (driver.findElement(By.xpath("//div[contains(@class, 'spinner-overlay')]")).isEnabled()) {
+                    System.out.println("Я слишком стар для этого дерьма");
+                    driver.findElement(By.xpath("//div[contains(@class, 'spinner-overlay')]")).getAttribute("value");
+                    driver.findElement(By.xpath("//div[contains(@class, 'spinner-overlay')]")).getAttribute("class");
+                    driver.findElement(By.xpath("//div[contains(@class, 'spinner-overlay')]")).getAttribute("text()");
+                    driver.findElement(By.xpath("//div[contains(@class, 'spinner-overlay')]")).getAttribute("text");
+                    driver.findElement(By.xpath("//div[contains(@class, 'spinner-overlay')]")).getAttribute("id");
+                    System.out.println("WTF");
+                    try {
+                        Thread.sleep(100000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }*/
                 click(boxMenuOfProgram);
-                System.out.println("НАЖАЛИ?!?!?!?!");
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                if (value.equals("Купить готовую квартиру"))
+                if (value.equals("Купить готовую квартиру")) {
                     click(elementOfBoxMenuOfProgram);
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
                 }
+                sleep(2);
                 break;
             case "Которая стоит":
                 fillField(priceInput, value);
@@ -76,9 +81,10 @@ public class FillingPage extends BasePage {
 
 
     public String getValue(String fieldName) {
+        System.out.println("HERE&!&!&!&!");
         switch (fieldName) {
             case "Программа":
-                return elementOfBoxMenuOfProgram.findElement(By.xpath("./div/div")).getAttribute("value");
+                return elementOfBoxMenuOfProgram.findElement(By.xpath("./span")).getText();
             case "Которая стоит":
                 return priceInput.getAttribute("value").replaceAll("\\D", "");
             case "У меня есть":
