@@ -23,10 +23,8 @@ public class CheckingPage extends BasePage {
     public String getValue(String fieldName) {
         switch (fieldName) {
             case "Сумма кредита":
-                System.out.println("value:");
-                System.out.println(creditAmount.findElement(By.xpath("./parent::div")).getAttribute("value"));
-                System.out.println("text:");
-                System.out.println(creditAmount.findElement(By.xpath("./parent::div")).getText());
+
+                System.out.println(creditAmount.getText());
                 return creditAmount.getText().replaceAll("\\D", "");
             case "Ежемесячный платеж":
                 return monthlyToll.getText().replaceAll("\\D", "");
