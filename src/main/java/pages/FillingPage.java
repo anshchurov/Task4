@@ -1,6 +1,8 @@
 package pages;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -29,6 +31,9 @@ public class FillingPage extends BasePage {
     @FindBy(xpath = "//input[@id='youngFamilyDiscount']")
     public WebElement yongFamilyCheck;
 
+    @FindBy(xpath = "//div[@class='chat_button___2Qff chat_button_open___2rDC chat_button_alone___xNxC']")
+    public WebElement closeChatBtn;
+
     public FillingPage() {
         PageFactory.initElements(driver, this);
     }
@@ -36,20 +41,8 @@ public class FillingPage extends BasePage {
     public void fillField(String fieldName, String value) {
         switch (fieldName) {
             case "Программа":
-                /*if (driver.findElement(By.xpath("//div[contains(@class, 'spinner-overlay')]")).isEnabled()) {
-                    System.out.println("Я слишком стар для этого дерьма");
-                    driver.findElement(By.xpath("//div[contains(@class, 'spinner-overlay')]")).getAttribute("value");
-                    driver.findElement(By.xpath("//div[contains(@class, 'spinner-overlay')]")).getAttribute("class");
-                    driver.findElement(By.xpath("//div[contains(@class, 'spinner-overlay')]")).getAttribute("text()");
-                    driver.findElement(By.xpath("//div[contains(@class, 'spinner-overlay')]")).getAttribute("text");
-                    driver.findElement(By.xpath("//div[contains(@class, 'spinner-overlay')]")).getAttribute("id");
-                    System.out.println("WTF");
-                    try {
-                        Thread.sleep(100000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }*/
+                System.out.println(fieldName);
+                sleep(2);
                 click(boxMenuOfProgram);
                 if (value.equals("Купить готовую квартиру")) {
                     click(elementOfBoxMenuOfProgram);
@@ -57,22 +50,44 @@ public class FillingPage extends BasePage {
                 sleep(2);
                 break;
             case "Которая стоит":
-                fillField(priceInput, value);
+                System.out.println(fieldName);
+                fillPrice(priceInput, value);
+                //fillField(priceInput, value);
                 break;
             case "У меня есть":
-                fillField(moneyAmount, value);
+                System.out.println(fieldName);
+                fillPrice(moneyAmount, value);
+                //fillField(moneyAmount, value);
                 break;
             case "Кредит на срок":
+                System.out.println(fieldName);
                 fillField(slavTime, value);
                 break;
             case "Я получаю зарплату на карту Сбербанка":
+                System.out.println(fieldName);
+                try {
+                    if (closeChatBtn.isEnabled())
+                        click(closeChatBtn);
+                } catch (NoSuchElementException e) {
+                }
                 if (value.equals("1") &&
-                        haveSberWorkCardCheck.getAttribute("class").equals("checkbox___3_Z2"))
+                        !haveSberWorkCardCheck.isSelected())
                     click(haveSberWorkCardCheck);
+                break;
             case "Скидка по федеральной программе 'Молодая семья'":
+                System.out.println(fieldName);
+                try {
+                    if (closeChatBtn.isEnabled())
+                        click(closeChatBtn);
+                } catch (NoSuchElementException e) {
+                }
+                scrollToElement(yongFamilyCheck.findElement(By.xpath("./parent::label")));
+                System.out.println("scrolled");
                 if (value.equals("1") &&
-                        yongFamilyCheck.getAttribute("class").equals("checkbox___3_Z2"))
-                    click(yongFamilyCheck);
+                        !yongFamilyCheck.isSelected()) {
+                    System.out.println("!isSelected!");
+                    click(yongFamilyCheck.findElement(By.xpath("./parent::label")));
+                }
                 break;
             default:
                 throw new AssertionError("Поле '" + fieldName + "' не объявлено на странице");
@@ -81,23 +96,28 @@ public class FillingPage extends BasePage {
 
 
     public String getValue(String fieldName) {
-        System.out.println("HERE&!&!&!&!");
+        System.out.println("in getValue");
         switch (fieldName) {
             case "Программа":
-                return elementOfBoxMenuOfProgram.findElement(By.xpath("./span")).getText();
+                scrollToElement(boxMenuOfProgram);
+                System.out.println("scrolled");
+                return boxMenuOfProgram.getText();
             case "Которая стоит":
                 return priceInput.getAttribute("value").replaceAll("\\D", "");
             case "У меня есть":
                 return moneyAmount.getAttribute("value").replaceAll("\\D", "");
             case "Кредит на срок":
+                scrollToElement(slavTime);
                 return slavTime.getAttribute("value").replaceAll("\\D", "");
             case "Я получаю зарплату на карту Сбербанка":
-                if (haveSberWorkCardCheck.getAttribute("class").contains("checkboxOpened___3n1Y"))
+                if (haveSberWorkCardCheck.isSelected())
                     return "1";
                 else
                     return "0";
             case "Скидка по федеральной программе 'Молодая семья'":
-                if (yongFamilyCheck.getAttribute("class").contains("checkboxOpened___3n1Y"))
+                scrollToElement(yongFamilyCheck.findElement(By.xpath("./parent::label")));
+                System.out.println("scrolled for youngFamily");
+                if (yongFamilyCheck.isSelected())
                     return "1";
                 else
                     return "0";

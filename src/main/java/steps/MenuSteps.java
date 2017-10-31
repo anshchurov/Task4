@@ -20,8 +20,8 @@ public class MenuSteps {
         new MenuPage().pressCalc();
     }
 
-    @Step("Закрыть чат")
+    /*@Step("Закрыть чат")
     public void closeChat(){
         new MenuPage().closeChat();
-    }
+    }*/
 }

@@ -33,12 +33,29 @@ public class BasePage {
 
     public void fillField(WebElement element, String value) {
         click(element);
-        action = new Actions(driver);
-        action.sendKeys(Keys.chord(Keys.CONTROL, "a") +value).perform();
-
-        //for(int i = 0; i < value.length(); ++i)
-            //element.sendKeys(value.charAt(0) + "");
+        element.clear();
+        element.sendKeys(Keys.HOME);
+        String N = value.charAt(0) + "";
+        element.sendKeys(N);
+        element.sendKeys(Keys.RIGHT);
+        element.sendKeys(Keys.BACK_SPACE);
+        N = value.charAt(1) + "";
+        element.sendKeys(N);
     }
+
+    public void fillPrice(WebElement element, String value){
+        click(element);
+        element.clear();
+        element.sendKeys(Keys.HOME);
+        String N = value.charAt(0) + "";
+        element.sendKeys(N);
+        element.sendKeys(Keys.RIGHT);
+        element.sendKeys(Keys.RIGHT);
+        element.sendKeys(Keys.BACK_SPACE);
+    }
+
+
+
 
     public void click(WebElement element) {
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(false);", element);
@@ -46,6 +63,13 @@ public class BasePage {
         wait.until(ExpectedConditions.visibilityOf(element));
         sleep(1);
         element.click();
+    }
+
+    public void scrollToElement(WebElement element) {
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(false);", element);
+        Wait<WebDriver> wait = new WebDriverWait(driver, 5, 1000);
+        wait.until(ExpectedConditions.visibilityOf(element));
+        sleep(1);
     }
 
     public void sleep(int time) {

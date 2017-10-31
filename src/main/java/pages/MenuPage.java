@@ -17,8 +17,6 @@ public class MenuPage extends BasePage {
     @FindBy(xpath = "//a[@href='https://ipoteka.domclick.ru/#calc']")
     public WebElement calcBtn;
 
-    @FindBy(xpath = "//div[@class='chat_button___2Qff chat_button_open___2rDC chat_button_alone___xNxC']")
-    public WebElement closeChatBtn;
 
     public MenuPage() {
         PageFactory.initElements(driver, this);
@@ -38,9 +36,9 @@ public class MenuPage extends BasePage {
         driver.get(calcBtn.getAttribute("href"));
     }
 
-    public void closeChat() {
+   /* public void closeChat() {
         if (closeChatBtn.isDisplayed())
             click(closeChatBtn);
-    }
+    }*/
 
 }

@@ -10,7 +10,8 @@ public class CheckingSteps {
 
     @Step("Проверить поле {0] на значение {1}")
     public void checkField(String field, String value){
-        String actual = new FillingPage().getValue(field);
+        System.out.println("CHECKING into!");
+        String actual = new FillingPage().getValue(field).replaceAll("\\D", "");
         String rValue = value.replaceAll("\\D", "");
         assertEquals(String.format("Значение поля %s не равно %s. Получено значение %s",
                 field, value, actual), rValue, actual);

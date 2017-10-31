@@ -36,6 +36,7 @@ public class ScenarioSteps {
 
     @Then("^Значения полей:$")
     public void checkForm(DataTable fields){
+        System.out.println("CHEKING!");
         fields.asMap(String.class, String.class)
                 .forEach((field, value) -> checkingSteps.checkField(field, value));
     }
