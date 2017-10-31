@@ -7,7 +7,8 @@ public class FillingSteps {
 
     @Step("заполнить поле {0} значением {1}")
     public void fillField(String field, String value){
-        new FillingPage().fillField(field, value);
+        FillingPage fillingPage = new FillingPage();
+        fillingPage.fillField(field, value);
     }
 
 }

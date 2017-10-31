@@ -33,7 +33,12 @@ public class MenuPage extends BasePage {
     public void pressCalc() {
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(false);", calcBtn);
         click(calcBtn);
-        driver.get(calcBtn.getAttribute("href"));
+        //driver.get(calcBtn.getAttribute("href"));
+        while (!driver.getTitle().equals("Домклик - Ипотека от Сбербанка Онлайн")) {
+            for (String handle : driver.getWindowHandles()) {
+                driver.switchTo().window(handle);
+            }
+        }
     }
 
    /* public void closeChat() {

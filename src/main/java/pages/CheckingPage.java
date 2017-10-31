@@ -23,13 +23,11 @@ public class CheckingPage extends BasePage {
     public String getValue(String fieldName) {
         switch (fieldName) {
             case "Сумма кредита":
-
-                System.out.println(creditAmount.getText());
                 return creditAmount.getText().replaceAll("\\D", "");
             case "Ежемесячный платеж":
                 return monthlyToll.getText().replaceAll("\\D", "");
             case "Процентная ставка":
-                return yearlyPercent.getText().replaceAll("\\D", "");// уберёт и ".", но пока пусть будет так
+                return yearlyPercent.getText();
             default:
                 throw new AssertionError("Поле '" + fieldName + "' не объявлено на странице");
         }
